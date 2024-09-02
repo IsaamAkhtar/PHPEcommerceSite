@@ -1,4 +1,12 @@
 <?php
+/*
+ * This script serves as the administration panel for the e-store:
+ * 1. Ensures the user is logged in and has admin privileges; redirects to access-denied page if not.
+ * 2. Includes CSS and JavaScript files for styling and functionality.
+ * 3. Displays success and error messages stored in session variables.
+ * 4. Provides navigation tabs for managing categories, products, and orders.
+ * 5. Loads content for categories, products, and orders from separate PHP files.
+ */
 session_start();
 if(!isset($_SESSION['SESS_USER_ID']) || (trim($_SESSION['SESS_USER_ID']) == '')) {
 	header("location: ../access-denied.php");
@@ -21,7 +29,7 @@ if(intval($_SESSION['SESS_IS_ADMIN']) !== 1)
 <body>
 <div id="main">
 	<div class="container">
-	<h2>iDukan : Administration</h2><a href="../" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-left"></span> Back to site</a>
+	<h2>EStore : Administration</h2><a href="../" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-left"></span> Back to site</a>
 	<hr>
 	<?php
       if( isset($_SESSION['MSGS']) && is_array($_SESSION['MSGS']) && count($_SESSION['MSGS']) >0 ) {
@@ -66,13 +74,13 @@ if(intval($_SESSION['SESS_IS_ADMIN']) !== 1)
 
 	<div class="tab-content" style="padding-top: 20px;">
 	  <div class="row tab-pane fade in active" id="category">
-	  	<?php include_once 'category.php'; ?>
+	  	<?php include_once 'categories.php'; ?>
 	  </div>
 	  <div class="row tab-pane fade" id="products">
-	  	<?php include_once 'products.php'; ?>
+	  	<?php include_once 'currentProducts.php'; ?>
 	  </div>
 	  <div class="tab-pane fade" id="orders">
-	  	<?php include_once 'orders.php'; ?>
+	  	<?php include_once 'customerOrders.php'; ?>
 	  </div>
 	</div>
 	<script>

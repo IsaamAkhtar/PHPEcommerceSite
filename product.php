@@ -1,67 +1,130 @@
 <?php
-session_start();
-if(!isset($_GET['id']))
-{
-	header("location: store.php");
-	exit();
-}
-else {
-	//Include database connection details
-	require_once('config.php');
-	$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-	if (!$link) {
-		die("Cannot access db.");
-	}
-
-	$db = mysql_select_db(DB_DATABASE);
-	if(!$db) {
-		die("Unable to select database");
-	}
-	$products;
-	//get all the categories
-	$res = mysql_query("SELECT `tbl_product`.*,`tbl_category`.`cat_name`
-						FROM `tbl_product`
-						INNER JOIN `tbl_category`
-						ON `tbl_product`.`cat_id`=`tbl_category`.`cat_id`
-						WHERE `pd_id`=".$_GET['id']);
-	while ($row = mysql_fetch_object($res)) {
-		$product = $row;
-	}
-}
-?>
-<?php
+require_once 'auth.php';
 include 'includes/header.php';
 include 'includes/nav.php';
+include 'includes/profile-data.php';
+
+// Set up the number formatter
+$locale = 'en_US';
+$currency = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+
 ?>
+
 <div id="main">
-	<header class="container">
-      <ol class="breadcrumb">
-        <li>
-          <a href="store.php">Store</a>
-        </li>
-        <li>
-          <a href="store.php?category=<?php echo $product->cat_id ?>"><?php echo $product->cat_name ?></a>
-        </li>
-        <li class="active"><?php echo $product->pd_name ?></li>
-      </ol>
-    </header>
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <img src="img/uploads/<?php echo $product->pd_image; ?>" class="img-responsive">
+        <div class="row">
+            <div class="col-md-5">
+                <h4>User Credentials</h4>
+                <form class="form-horizontal" action="includes/profile-data.php" method="POST">
+                    <div class="form-group">
+                        <label for="inputUsername" class="control-label col-md-4">Username</label>
+                        <div class="col-md-8">
+                            <input type="text" value="<?php echo htmlspecialchars($user['user_name']); ?>" class="form-control" disabled name="username" id="inputUsername">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="control-label col-md-4">Email</label>
+                        <div class="col-md-8">
+                            <input type="email" value="<?php echo htmlspecialchars($user['user_email']); ?>" class="form-control" disabled name="email" id="inputEmail">
+                        </div>
+                    </div>
+                    <p class="help-block">Change Password</p>
+                    <?php
+                    if (isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) > 0) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <ul class="list-unstyled">
+                                <?php
+                                foreach ($_SESSION['ERRMSG_ARR'] as $msg) {
+                                    echo '<li>' . htmlspecialchars($msg) . '</li>';
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    <?php
+                        unset($_SESSION['ERRMSG_ARR']);
+                    }
+                    ?>
+                    <div class="form-group">
+                        <label for="inputPassword" class="control-label col-md-4">Password</label>
+                        <div class="col-md-8">
+                            <input type="password" class="form-control" name="password" id="inputPassword">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCPassword" class="control-label col-md-4">Confirm Password</label>
+                        <div class="col-md-8">
+                            <input type="password" class="form-control" name="cpassword" id="inputCPassword">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8 col-md-offset-4">
+                            <button type="submit" class="btn btn-default">Change it!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-7">
+                <h4>Orders</h4>
+                <?php
+                if (isset($orders) && count($orders) > 0) {
+                ?>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Order Date</th>
+                                <th>Products</th>
+                                <th>Order Status</th>
+                                <th>Order Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($orders as $order) {
+                                $status = '';
+                                switch ($order->od_status) {
+                                    case 'New':
+                                        $status = '<span class="label label-primary">New</span>';
+                                        break;
+                                    case 'Shipped':
+                                        $status = '<span class="label label-info">Shipped</span>';
+                                        break;
+                                    case 'Completed':
+                                        $status = '<span class="label label-success">Completed</span>';
+                                        break;
+                                    case 'Cancelled':
+                                        $status = '<span class="label label-danger">Cancelled</span>';
+                                        break;
+                                    default:
+                                        $status = '<span class="label label-default">Processing</span>';
+                                        break;
+                                }
+                            ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($order->od_id); ?></td>
+                                    <td><?php echo htmlspecialchars($order->od_date); ?></td>
+                                    <td><?php echo htmlspecialchars($order->products); ?></td>
+                                    <td><?php echo $status; ?></td>
+                                    <td><?php echo $currency->formatCurrency(floatval($order->od_cost), 'INR'); ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                <?php
+                } else {
+                ?>
+                    <div class="alert alert-warning">We didn't find any orders placed by you.</div>
+                <?php
+                }
+                ?>
+            </div>
         </div>
-        <div class="col-md-8">
-          <h3><?php echo $product->pd_name ?></h3>
-          <hr>
-          <?php setlocale(LC_MONETARY,'en_US'); ?>
-          <h4><strong>Price:</strong> &#8377; <?php echo money_format('%!i', floatval($product->pd_price)) ?></h4>
-          <p><?php echo $product->pd_description ?  $product->pd_description : '<span class="text-muted">No description</span>'; ?></p>
-          <p>Available Quantity: <span class="badge"><?php echo $product->pd_qty ?></span></p>
-          <a href="cart.php?add=<?php echo $product->pd_id; ?>" class="btn btn-primary">Add to Cart<br></a>
-        </div>
-      </div>
     </div>
 </div>
+
 <?php
 include 'includes/footer.php';
 ?>

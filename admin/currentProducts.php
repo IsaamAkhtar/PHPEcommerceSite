@@ -1,4 +1,12 @@
-<?php 
+<?php
+/*
+ * This script handles product management:
+ * 1. Displays a button to open a modal for adding new products.
+ * 2. Contains a modal form for submitting product details including category, name, image, description, price, and quantity.
+ * 3. Previews the selected product image and checks its size before submission.
+ * 4. Displays a table of existing products with options to delete them.
+ * 5. Shows a message if no products are found.
+ */
 include_once 'products-data.php'; ?>
   <div class="col-md-2">
     <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#add-product"><span class="glyphicon glyphicon-plus-sign"></span> Add Product</button>

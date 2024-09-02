@@ -7,7 +7,7 @@ include 'includes/nav.php';
 <div id="main">
   <div class="container">
       <form method="POST" action="includes/login-exec.php" accept-charset="UTF-8" class="form-signin">
-        <h3 class="form-signin-heading">Please sign in</h3>
+        <h3 class="form-signin-heading">Please sign in.</h3>
         <?php
           if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
               ?>

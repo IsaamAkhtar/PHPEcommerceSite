@@ -7,7 +7,7 @@ include 'includes/nav.php';
 	<div class="container">
 	<div class="alert alert-danger">
 		<h4>Access Denied!</h4>
-	  	<p>You do not have access to this page. Either you are not <a href="login.php">logged in</a> or you do not have the privileges vieweing the requested page.</p>
+	  	<p>You do not have access to this page. Either you are not <a href="customerLogin.php">logged in</a> or you do not have the privileges needed for vieweing the requested page.</p>
 	</div>
 	
 </div>

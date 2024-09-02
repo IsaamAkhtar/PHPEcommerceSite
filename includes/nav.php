@@ -4,7 +4,7 @@
       <div class="navbar navbar-fixed-top navbar-default">
         <div class="container">
           <div class="navbar-header">
-            <a href="index.php" class="navbar-brand">iDukan</a>           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main">
+            <a href="index.php" class="navbar-brand">EStore</a>           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -49,7 +49,7 @@
                     </ul>
                   </li>
                 <?php } else { ?>
-                <a href="login.php">Login</a>
+                <a href="customerLogin.php">Login</a>
                 <?php } ?>
               </li>
             </ul>

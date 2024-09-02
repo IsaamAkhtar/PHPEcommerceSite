@@ -10,54 +10,52 @@ include 'includes/nav.php';
   <div class="container">
     <div class="row">
       <div class="col-md-7 col-sm-6">
-        <?php if( count($_SESSION['CART']) > 0 )  { ?>
+        <?php if (count($_SESSION['CART']) > 0) { ?>
         <h4>Review Order Items</h4>
-    	<div class="table-responsive">
-    		<table class="table products-table">
-		      <thead>
-		        <tr>
-		          <th>Preview</th>
-		          <th>Name</th>
-		          <th class="text-center">Price</th>
-		          <th class="text-center">Remove</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		        <?php
-            $_SESSION['total'] = 0;
-		        foreach ($_SESSION['CART'] as $item) {
-              $_SESSION['total'] += $item['pd_price'];
-		          ?>
-		          <tr>
-		            <td><img style="max-width:140px;" src="img/uploads/<?php echo $item['pd_image'] ?>" alt="<?php echo $item['pd_name'] ?>"></td>
-		            <td><?php echo $item['pd_name'] ?></td>
-                <?php setlocale(LC_MONETARY,'en_US'); ?>
-		            <td class="text-center">&#8377; <?php echo money_format('%!i', floatval($item['pd_price'])); ?></td>
-		            <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from you cart?');"> </span></a></td>
-		          </tr>
-		          <?php
-		        }
-		        ?>
-            <tr>
-              <td>&nbsp;</td>
-              <td>
-                <h4>Total:</h4>
-              </td>
-              <td class="text-info text-center">
-                &#8377; <?php echo money_format('%!i', floatval($_SESSION['total'])); ?>
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-		      </tbody>
-		    </table>
-    	</div>
-	    <?php 
-	    } // check count of cart
-	    else
-	    {
-	      echo '<div class="alert alert-info">Oh no! Add something to your cart from the Store.</div>';
-	    }
-	    ?>
+        <div class="table-responsive">
+            <table class="table products-table">
+              <thead>
+                <tr>
+                  <th>Preview</th>
+                  <th>Name</th>
+                  <th class="text-center">Price</th>
+                  <th class="text-center">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $_SESSION['total'] = 0;
+                foreach ($_SESSION['CART'] as $item) {
+                  $_SESSION['total'] += $item['pd_price'];
+                  ?>
+                  <tr>
+                    <td><img style="max-width:140px;" src="img/uploads/<?php echo $item['pd_image'] ?>" alt="<?php echo $item['pd_name'] ?>"></td>
+                    <td><?php echo $item['pd_name'] ?></td>
+                    <?php setlocale(LC_MONETARY, 'en_US'); ?>
+                    <td class="text-center">&#8377; <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
+                    <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from your cart?');"> </span></a></td>
+                  </tr>
+                  <?php
+                }
+                ?>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>
+                    <h4>Total:</h4>
+                  </td>
+                  <td class="text-info text-center">
+                    &#8377; <?php echo number_format(floatval($_SESSION['total']), 2); ?>
+                  </td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <?php 
+        } else {
+          echo '<div class="alert alert-info">Oh no! Add something to your cart from the Store.</div>';
+        }
+        ?>
       </div>
       <div class="col-md-5 col-sm-6">
         <h4>Order Details</h4>
@@ -99,14 +97,11 @@ include 'includes/nav.php';
       var address = $('#address').val();
       var city = $('#city').val();
       var postal_code = $('#postal_code').val();
-      if(name == '' || address == '' || city=='' || postal_code=='' )
-      {
-        $('<div class="alert alert-warning"><b>Oh no!</b> Please fill all feilds.</div>').hide().insertBefore('#oform');
+      if(name == '' || address == '' || city == '' || postal_code == '' ) {
+        $('<div class="alert alert-warning"><b>Oh no!</b> Please fill all fields.</div>').hide().insertBefore('#oform');
         $('.alert-warning').fadeIn();
         return false;
-      }
-      else
-      {
+      } else {
         return true;
       }
     });

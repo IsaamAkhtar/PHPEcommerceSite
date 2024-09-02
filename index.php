@@ -13,7 +13,7 @@ include 'includes/nav.php';
             <img src="img/gallery_perform.png" alt="...">
             <div class="carousel-caption">
               <h4>The new MacBook Air</h4>
-              All the power blah blah..
+              All the power...
             </div>
           </div>
           <div class="item" style="">
@@ -41,16 +41,16 @@ include 'includes/nav.php';
     <div class="container">
       <div class="row">
         <div class="col-sm-3 col-xs-6 text-center">
-        	<a href="store.php?category=1"><img src="img/home-shopmac.png" alt="Shop Mac"></a>
+        	<a href="store.php?category=16"><img src="img/home-shopmac.png" alt="Shop Mac"></a>
         </div>
         <div class="col-sm-3 col-xs-6 text-center">
-        	<a href="store.php?category=11"><img src="img/home-shopiphone.png" alt="Shop iPhone"></a>
+        	<a href="store.php?category=17"><img src="img/home-shopiphone.png" alt="Shop iPhone"></a>
         </div>
         <div class="col-sm-3 col-xs-6 text-center">
-        	<a href="store.php?category=7"><img src="img/home-shopipad.png" alt="Shop iPad"></a>
+        	<a href="store.php?category=18"><img src="img/home-shopipad.png" alt="Shop iPad"></a>
         </div>
         <div class="col-sm-3 col-xs-6 text-center">
-        	<a href="store.php?category=1"><img src="img/home-shopipod.png" alt="Shop iPod"></a>
+        	<a href="store.php?category=19"><img src="img/home-shopipod.png" alt="Shop iPods"></a>
         </div>
       </div>
     </div>

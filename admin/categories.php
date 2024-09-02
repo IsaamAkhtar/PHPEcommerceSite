@@ -1,8 +1,12 @@
+
+
 <?php
+/*
+This file allows for the admin to add categories to the stores pages.
+*/
 include_once 'category-data.php'; ?>
   <div class="col-md-2">
     <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#add-category"><span class="glyphicon glyphicon-plus-sign"></span> Add Category</button>
-
     <div class="modal fade" id="add-category" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">

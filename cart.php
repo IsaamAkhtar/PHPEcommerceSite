@@ -1,71 +1,79 @@
 <?php
 session_start();
-if(isset($_GET['clear'])) 
-{
-  if ($_GET[clear]) 
-  {
-    unset($_SESSION['CART']);
-    $_SESSION['MSGS'] = array('Your cart has been emptied.');
-    session_write_close();
-    header("location: cart.php");
-    exit();
-  }
-}
 
-if ( isset($_GET['del']) ) 
-{
-  foreach($_SESSION['CART'] as $cart_item_ID => $cart_item)
-  {
-      if($cart_item['pd_id'] == $_GET['del']){
-        unset($_SESSION['CART'][$cart_item_ID]);
-        $_SESSION['MSGS'] = array('Item remove from your cart.');
+if (isset($_GET['clear'])) {
+    if ($_GET['clear']) {
+        unset($_SESSION['CART']);
+        $_SESSION['MSGS'] = array('Your cart has been emptied.');
         session_write_close();
         header("location: cart.php");
         exit();
-      }
-  }
+    }
 }
 
-if(isset($_GET['add']) )
-{
-  //Include database connection details
-  require_once('config.php');
-  $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-  if (!$link) {
-    die("Cannot access db.");
-  }
+if (isset($_GET['del'])) {
+    foreach ($_SESSION['CART'] as $cart_item_ID => $cart_item) {
+        if ($cart_item['pd_id'] == $_GET['del']) {
+            unset($_SESSION['CART'][$cart_item_ID]);
+            $_SESSION['MSGS'] = array('Item removed from your cart.');
+            session_write_close();
+            header("location: cart.php");
+            exit();
+        }
+    }
+}
 
-  $db = mysql_select_db(DB_DATABASE);
-  if(!$db) {
-    die("Unable to select database");
-  }
-  $product;
-  $res = mysql_query("SELECT `tbl_product`.*,`tbl_category`.`cat_name`
-            FROM `tbl_product`
-            INNER JOIN `tbl_category`
-            ON `tbl_product`.`cat_id`=`tbl_category`.`cat_id`
-            WHERE `pd_id`=".$_GET['add']." LIMIT 1");
+if (isset($_GET['add'])) {
+    // Include database connection details
+    require_once('config.php');
 
-  $product = mysql_fetch_assoc($res);
+    // Updated to use mysqli_connect instead of mysql_connect
+    $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 
-  if(!isset( $_SESSION['CART']) ) $_SESSION['CART'] = array();
+    if (!$link) {
+        die("Cannot access db: " . mysqli_connect_error());
+    }
 
-  if(!in_array($product, $_SESSION['CART']))
-  {
-    array_push($_SESSION['CART'], $product );
-    $_SESSION['MSGS'] = array('Item added to your cart.');
+    $product;
+    $query = "SELECT `tbl_product`.*,`tbl_category`.`cat_name`
+              FROM `tbl_product`
+              INNER JOIN `tbl_category`
+              ON `tbl_product`.`cat_id`=`tbl_category`.`cat_id`
+              WHERE `pd_id`=" . intval($_GET['add']) . " LIMIT 1";
+
+    $res = mysqli_query($link, $query);
+
+    if ($res) {
+        $product = mysqli_fetch_assoc($res);
+
+        if (!isset($_SESSION['CART'])) {
+            $_SESSION['CART'] = array();
+        }
+
+        // Check if the product is already in the cart
+        $inCart = false;
+        foreach ($_SESSION['CART'] as $cart_item) {
+            if ($cart_item['pd_id'] == $product['pd_id']) {
+                $inCart = true;
+                break;
+            }
+        }
+
+        if (!$inCart) {
+            array_push($_SESSION['CART'], $product);
+            $_SESSION['MSGS'] = array('Item added to your cart.');
+        } else {
+            $_SESSION['ERR_MSGS'] = array('Item is already added to your cart.');
+        }
+    } else {
+        die("Query failed: " . mysqli_error($link));
+    }
+
     session_write_close();
     header("location: cart.php");
     exit();
-  }
-  else
-  {
-    $_SESSION['ERR_MSGS'] = array('Item is already added to your cart.');
-    session_write_close();
-    header("location: cart.php");
-    exit();
-  }
-}// if GET is there
+}
+
 ?>
 <?php
 include 'includes/header.php';
@@ -76,7 +84,7 @@ include 'includes/nav.php';
     <h3 class="page-header">Cart</h3>
   </header>
   <div class="container">
-    <?php if( count($_SESSION['CART']) > 0 )  { ?>
+    <?php if (count($_SESSION['CART']) > 0) { ?>
     <div class="table-responsive">
       <table class="table products-table">
       <thead>
@@ -100,9 +108,9 @@ include 'includes/nav.php';
             <td><?php echo $item['pd_name'] ?></td>
             <td><?php echo $item['pd_description'] ?  $item['pd_description'] : '<span class="text-muted">No description</span>'; ?></td>
             <td class="text-center"><?php echo $item['cat_name'] ?></td>
-            <?php setlocale(LC_MONETARY,'en_US'); ?>
-            <td class="text-center">&#8377; <?php echo money_format('%!i', floatval($item['pd_price'])); ?></td>
-            <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from you cart?');"> </span></a></td>
+            <?php setlocale(LC_MONETARY, 'en_US'); ?>
+            <td class="text-center">&#8377; <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
+            <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from your cart?');"> </span></a></td>
           </tr>
           <?php
         }
@@ -113,7 +121,7 @@ include 'includes/nav.php';
             <h4>Total:</h4>
           </td>
           <td colspan="2" class="text-info">
-            &#8377; <?php echo money_format('%!i', floatval($_SESSION['total'])); ?>
+            &#8377; <?php echo number_format(floatval($_SESSION['total']), 2); ?>
           </td>
         </tr>
       </tbody>
@@ -125,9 +133,7 @@ include 'includes/nav.php';
     </div>
     
     <?php 
-    } // check count of cart
-    else
-    {
+    } else {
       echo '<div class="alert alert-info">Oh no! Add something to your cart from the Store.</div>';
     }
     ?>

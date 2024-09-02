@@ -1,4 +1,10 @@
-<?php 
+<?php
+/*
+ * This script displays a table of orders:
+ * 1. Includes data from 'orders-data.php' to fetch order details.
+ * 2. Displays a table with columns for order ID, date, products, status, customer name, address, and cost.
+ * 3. Shows a warning message if no orders are found.
+ */
 include_once 'orders-data.php'; ?>
   <div class="col-md-12">
     <?php
@@ -38,7 +44,7 @@ include_once 'orders-data.php'; ?>
     <?php
     }
     else { ?>
-      <div class="alert alert-warning"><strong>Oh my!</strong> Didn't find any orders, please add some.</div>
+      <div class="alert alert-warning"><strong></strong> Didn't find any orders, please add some.</div>
     <?php
     }
     ?>
