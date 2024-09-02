@@ -2,7 +2,7 @@
 
 ## Screenshots
 
-![Homepage](screenshots/homepage.png)
+![Homepage](img/screenshots/homepage.png)
 
 ## Overview
 
