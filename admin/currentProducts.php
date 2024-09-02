@@ -76,7 +76,7 @@ include_once 'products-data.php'; ?>
                 <div class="form-group">
                   <label for="price" class="control-label col-md-4">Price</label>
                   <div class="col-md-8 input-group">
-                    <span class="input-group-addon">&#8377;</span>
+                    <span class="input-group-addon">$</span>
                     <input type="number" placeholder="00.00" class="form-control" name="price" id="price" pattern="[0-9]+(\\.[0-9][0-9]?)?">
                   </div>
                 </div>
@@ -122,7 +122,7 @@ include_once 'products-data.php'; ?>
             <td><img src="../img/uploads/<?php echo $product->pd_image ?>" alt="<?php echo $product->pd_name ?>" style="max-width:140px;"></td>
             <td><?php echo $product->pd_description ?></td>
             <td><?php echo $product->cat_name ?></td>
-            <td class="text-center">&#8377; <?php echo $product->pd_price ?></td>
+            <td class="text-center">$ <?php echo $product->pd_price ?></td>
             <td class="text-center"><?php echo $product->pd_qty ?></td>
             <td class="text-center"><a href="products-data.php?delete=<?php echo $product->pd_id ?>"><span class="glyphicon glyphicon-trash"> </span></a></td>
           </tr>

@@ -25,16 +25,16 @@ include_once 'orders-data.php'; ?>
       </thead>
       <tbody>
         <?php
-          foreach ($orders as $orders) {
+          foreach ($orders as $order) {
         ?>
           <tr>
-            <td><?php echo $orders->od_id; ?></td>
-            <td><?php echo $orders->od_date; ?></td>
-            <td><?php echo $orders->products; ?></td>
-            <td><?php echo $orders->od_status; ?></td>
-            <td><?php echo $orders->od_name; ?></td>
-            <td><?php echo $orders->od_address . '<br>' . $orders->od_city . ' ' . $orders->od_postal_code; ?></td>
-            <td class="text-center">&#8377; <?php echo $orders->od_cost ?></td>
+            <td><?php echo $order->od_id; ?></td>
+            <td><?php echo $order->od_date; ?></td>
+            <td><?php echo $order->products; ?></td>
+            <td><?php echo $order->od_status; ?></td>
+            <td><?php echo $order->od_name; ?></td>
+            <td><?php echo $order->od_address . '<br>' . $order->od_city . ' ' . $order->od_postal_code; ?></td>
+            <td class="text-center">$ <?php echo $order->od_cost ?></td>
           </tr>
         <?php
           }

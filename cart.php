@@ -109,7 +109,7 @@ include 'includes/nav.php';
             <td><?php echo $item['pd_description'] ?  $item['pd_description'] : '<span class="text-muted">No description</span>'; ?></td>
             <td class="text-center"><?php echo $item['cat_name'] ?></td>
             <?php setlocale(LC_MONETARY, 'en_US'); ?>
-            <td class="text-center">&#8377; <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
+            <td class="text-center">$ <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
             <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from your cart?');"> </span></a></td>
           </tr>
           <?php
@@ -121,7 +121,7 @@ include 'includes/nav.php';
             <h4>Total:</h4>
           </td>
           <td colspan="2" class="text-info">
-            &#8377; <?php echo number_format(floatval($_SESSION['total']), 2); ?>
+            $ <?php echo number_format(floatval($_SESSION['total']), 2); ?>
           </td>
         </tr>
       </tbody>

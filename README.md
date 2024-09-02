@@ -3,6 +3,7 @@
 ## Screenshots
 
 ![Homepage](img/screenshots/homepage.png)
+![Cart Page](img/screenshots/cart-page.png)
 
 ## Overview
 

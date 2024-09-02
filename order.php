@@ -32,7 +32,7 @@ include 'includes/nav.php';
                     <td><img style="max-width:140px;" src="img/uploads/<?php echo $item['pd_image'] ?>" alt="<?php echo $item['pd_name'] ?>"></td>
                     <td><?php echo $item['pd_name'] ?></td>
                     <?php setlocale(LC_MONETARY, 'en_US'); ?>
-                    <td class="text-center">&#8377; <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
+                    <td class="text-center">$ <?php echo number_format(floatval($item['pd_price']), 2); ?></td>
                     <td class="text-center"><a href="cart.php?del=<?php echo $item['pd_id'] ?>"><span class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure you want to delete this item from your cart?');"> </span></a></td>
                   </tr>
                   <?php
@@ -44,7 +44,7 @@ include 'includes/nav.php';
                     <h4>Total:</h4>
                   </td>
                   <td class="text-info text-center">
-                    &#8377; <?php echo number_format(floatval($_SESSION['total']), 2); ?>
+                    $ <?php echo number_format(floatval($_SESSION['total']), 2); ?>
                   </td>
                   <td>&nbsp;</td>
                 </tr>
