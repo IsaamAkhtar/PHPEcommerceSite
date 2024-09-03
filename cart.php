@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+// Initialize the CART session variable if it doesn't exist
+if (!isset($_SESSION['CART'])) {
+    $_SESSION['CART'] = array();
+}
+
 if (isset($_GET['clear'])) {
     if ($_GET['clear']) {
         unset($_SESSION['CART']);
@@ -45,10 +50,6 @@ if (isset($_GET['add'])) {
 
     if ($res) {
         $product = mysqli_fetch_assoc($res);
-
-        if (!isset($_SESSION['CART'])) {
-            $_SESSION['CART'] = array();
-        }
 
         // Check if the product is already in the cart
         $inCart = false;
